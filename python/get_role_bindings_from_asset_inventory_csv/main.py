@@ -1,5 +1,4 @@
 """Google CloudのAsset InventoryのCSVを読み込み、ポリシー列を展開して列を並べ替えた結果をCSV出力する"""
-# インプットとなる対象CSVはAsset Inventoryの画面から取得する
 
 import csv
 import json
@@ -7,7 +6,7 @@ import re
 import sys
 
 
-# 実行時引数として対象CSVを受け取る
+# 実行時引数としてAsset Inventoryの画面から取得した対象CSVを受け取る
 args = sys.argv
 file_name = args[1]
 
