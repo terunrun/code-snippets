@@ -1,0 +1,1 @@
+select * from `sample_dataset.sample_table_*` where _TABLE_SUFFIX = @date
