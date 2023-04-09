@@ -16,13 +16,13 @@ from googleapiclient.discovery import build
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = [
-    'https://www.googleapis.com/auth/admin.directory.user',
-    'https://www.googleapis.com/auth/admin.directory.group',
-    ]
+    "https://www.googleapis.com/auth/admin.directory.user",
+    "https://www.googleapis.com/auth/admin.directory.group",
+]
 
 # 実行時引数としてGWS顧客IDを受け取る
 args = sys.argv
-customer_id = args[1]
+CUSTOMER_ID = args[1]
 
 
 def main():
@@ -33,28 +33,28 @@ def main():
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+    if os.path.exists("token.json"):
+        creds = Credentials.from_authorized_user_file("token.json", SCOPES)
     # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                "credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.json', 'w') as token:
+        with open("token.json", "w", encoding="utf-8") as token:
             token.write(creds.to_json())
-    service = build('admin', 'directory_v1', credentials=creds)
+    service = build("admin", "directory_v1", credentials=creds)
 
     # # 対象GWSドメインのユーザー一覧を取得してCSVに出力する
     # users_list = []
-    # with open(f'users_list_{customer_id}.csv', 'w') as users_file:
+    # with open(f'users_list_{CUSTOMER_ID}.csv', 'w') as users_file:
     #     writer = csv.writer(users_file)
     #     page_token = None
     #     while True:
-    #         results = service.users().list(customer=customer_id,
+    #         results = service.users().list(customer=CUSTOMER_ID,
     #                                     # maxResults=10,
     #                                     orderBy='email',
     #                                     pageToken=page_token,
@@ -76,31 +76,33 @@ def main():
     #     writer.writerows(users_list_sorted)
 
     groups_list = []
-    with open(f'groups_list_{customer_id}.csv', 'w') as groups_file:
+    with open(f"groups_list_{CUSTOMER_ID}.csv", "w", encoding="utf-8") as groups_file:
         writer = csv.writer(groups_file)
         page_token = None
         while True:
-            results = service.groups().list(customer=customer_id,
+            results = service.groups().list(customer=CUSTOMER_ID,
                                             # maxResults=10,
-                                            orderBy='email',
+                                            orderBy="email",
                                             pageToken=page_token,
                                         ).execute()
-            groups = results.get('groups', [])
+            groups = results.get("groups", [])
             if not groups:
-                print('\nNo groups in the domain.')
+                print("\nNo groups in the domain.")
             else:
                 for group in groups:
                     page_token_members = None
                     while True:
-                        results = service.members().list(groupKey=group['id'],
+                        results = service.members().list(groupKey=group["id"],
                                                         # maxResults=10,
                                                         pageToken=page_token_members,
                                                         ).execute()
-                        members = results.get('members', [])
+                        members = results.get("members", [])
 
                         if not members:
                             print(f'\nNo members in {group["name"]}.')
-                            groups_list.append([group["id"], group["email"], group["name"], "", "", "",])
+                            groups_list.append(
+                                [group["id"], group["email"], group["name"], "", "", "",]
+                            )
                         else:
                             for member in members:
                                 user = service.users().get(userKey=member["id"],).execute()
@@ -112,11 +114,13 @@ def main():
                                     # https://developers.google.com/admin-sdk/directory/reference/rest/v1/users?hl=ja#User
                                     # https://developers.google.com/admin-sdk/directory/reference/rest/v1/groups?hl=ja#Group
                                     # https://developers.google.com/admin-sdk/directory/reference/rest/v1/members?hl=ja#Member
-                                    groups_list.append([group["id"], group["email"], group["name"], member["role"], member["email"], user["name"]["fullName"]])
-                        page_token_members = results.get('nextPageToken', None)
+                                    groups_list.append(
+                                        [group["id"], group["email"], group["name"], member["role"], member["email"], user["name"]["fullName"]]
+                                    )
+                        page_token_members = results.get("nextPageToken", None)
                         if page_token_members is None:
                             break
-            page_token = results.get('nextPageToken', None)
+            page_token = results.get("nextPageToken", None)
             if page_token is None:
                 break
         # 並べ替えてヘッダーをつける

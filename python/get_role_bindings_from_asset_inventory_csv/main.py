@@ -8,19 +8,19 @@ import sys
 
 # 実行時引数としてAsset Inventoryの画面から取得した対象CSVを受け取る
 args = sys.argv
-file_name = args[1]
+FILE_NAME = args[1]
 
 
 def main():
     # 対象CSVをヘッダー抜きで読み込む
-    with open(f"./{file_name}.csv", 'rt') as input_csv:
+    with open(f"./{FILE_NAME}.csv", "rt", encoding="utf-8") as input_csv:
         # header = next(csv.reader(input_csv))
         # input_csv_rows = csv.reader(input_csv)
         dict_reader = csv.DictReader(input_csv)
-        input_csv_rows = [row for row in dict_reader]
+        input_csv_rows = list(dict_reader)
 
         # 結果出力CSVを作成
-        with open(f"./output_{file_name}.csv", 'w') as output_csv:
+        with open(f"./output_{FILE_NAME}.csv", "w", encoding="utf-8") as output_csv:
             writer = csv.writer(output_csv)
             writer.writerow([
                 "タイプ", "プリンシパル", "アドレス", "ドメイン", "リソースの種類", "組織",
@@ -32,8 +32,8 @@ def main():
                 # NOTE: 最後のreplaceはroleごとに分割したいために実行
                 regex_policy = re.sub(
                     ',condition:[a-zA-Z0-9_]*}', '","condition":""}', re.sub(
-                    '\],auditConfigs:\[\],etag:}', '', re.sub(
-                    '{version:[0-9]+,bindings:\[', '', input_csv_row["ポリシー"]
+                    r'\],auditConfigs:\[\],etag:}', '', re.sub(
+                    r'{version:[0-9]+,bindings:\[', '', input_csv_row["ポリシー"]
                 )))
                 quoted_regex_policy = regex_policy \
                     .replace(",members:[", '","members":"[') \
@@ -53,7 +53,7 @@ def main():
                         # NOTE: リストごと辞書値化されたことで前後に不要な[]があるため削除
                         replaced_member = member.replace("[", "").replace("]", "")
 
-                        type = ""
+                        member_type = ""
                         principal = ""
                         address = ""
                         domain =""
@@ -63,10 +63,10 @@ def main():
                         else:
                             splitted_replaced_members = replaced_member.split(":")
                             if splitted_replaced_members[0] == "deleted":
-                                type = splitted_replaced_members[1]
+                                member_type = splitted_replaced_members[1]
                                 principal = splitted_replaced_members[2]
                             else:
-                                type = splitted_replaced_members[0]
+                                member_type = splitted_replaced_members[0]
                                 principal = splitted_replaced_members[1]
                             if "@" in principal:
                                 splitted_principal = principal.split("@")
@@ -74,7 +74,7 @@ def main():
                                 domain = splitted_principal[1]
 
                         writer.writerow([
-                                            type,
+                                            member_type,
                                             principal,
                                             address,
                                             domain,

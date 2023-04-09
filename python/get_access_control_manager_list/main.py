@@ -13,16 +13,16 @@ import sys
 
 # 実行時引数として対象を受け取る
 args = sys.argv
-file_name = args[1]
+FILE_NAME = args[1]
 
 
 def main():
     # 対象JSONを読み込む
-    with open(f"./{file_name}.json", 'r') as input_json:
+    with open(f"./{FILE_NAME}.json", "r", encoding="utf-8") as input_json:
         acm_list = json.load(input_json)
 
         # 結果出力CSVを作成
-        with open(f"./output_{file_name}.csv", 'w') as output_csv:
+        with open(f"./output_{FILE_NAME}.csv", "w", encoding="utf-8") as output_csv:
             writer = csv.writer(output_csv)
             writer.writerow([ "タイプ", "プリンシパル", "アドレス", "ドメイン", "名前", "タイトル",])
 
@@ -31,7 +31,7 @@ def main():
                 if "members" in acm["basic"]["conditions"][0]:
                     members = acm["basic"]["conditions"][0]["members"]
                     for member in members:
-                        type = ""
+                        member_type = ""
                         principal = ""
                         address = ""
                         domain =""
@@ -41,17 +41,19 @@ def main():
                         else:
                             splitted_member = member.split(":")
                             if splitted_member[0] == "deleted":
-                                type = splitted_member[1]
+                                member_type = splitted_member[1]
                                 principal = splitted_member[2]
                             else:
-                                type = splitted_member[0]
+                                member_type = splitted_member[0]
                                 principal = splitted_member[1]
                             if "@" in principal:
                                 splitted_principal = principal.split("@")
                                 address = splitted_principal[0]
                                 domain = splitted_principal[1]
 
-                        writer.writerow([type, principal, address, domain, acm["name"], acm["title"]])
+                        writer.writerow(
+                            [member_type, principal, address, domain, acm["name"], acm["title"]]
+                        )
 
 
 if __name__ == "__main__":

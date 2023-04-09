@@ -13,38 +13,38 @@ CLUSTER_FIELDS = []
 
 
 def run_bq_query():
-    # クエリファイルを文字列として展開
-    with open('./sql/' + DESTINATION_TABLE + '.sql') as f:
-        query = f.read()
-        print('query:"{}"'.format(query))
-
     bigquery_client = bigquery.Client(PROJECT)
+
+    # クエリファイルを文字列として展開
+    with open(f"./sql/{DESTINATION_TABLE}.sql", "r", encoding="utf-8") as file:
+        query = file.read()
+        print(f'query:"{query}"')
 
     # クエリ発行時の設定
     job_config = bigquery.QueryJobConfig()
     job_config.destination = bigquery_client.dataset(DESTINATION_DATASET).table(DESTINATION_TABLE)
-    job_config.write_disposition = 'WRITE_TRUNCATE'
-    job_config.create_disposition = 'CREATE_IF_NEEDED'
+    job_config.write_disposition = "WRITE_TRUNCATE"
+    job_config.create_disposition = "CREATE_IF_NEEDED"
     job_config.use_legacy_sql = False
 
     # クエリパラメータの設定
     if QUERY_PARAMS_VALUES:
         query_params = []
         for key, value in QUERY_PARAMS_VALUES.items():
-            print(f'query parameter name: @{key}, value: {value}')
-            query_params.append(bigquery.ScalarQueryParameter(key, 'STRING', value))
+            print(f"query parameter name: @{key}, value: {value}")
+            query_params.append(bigquery.ScalarQueryParameter(key, "STRING", value))
         job_config.query_parameters = query_params
 
     # パーティションの設定
     if TIME_PARTITIONING_COLUMN:
-        print(f'time_partitioning_column: {TIME_PARTITIONING_COLUMN}')
+        print(f"time_partitioning_column: {TIME_PARTITIONING_COLUMN}")
         job_config.time_partitioning = bigquery.TimePartitioning(
             type_=TIME_PARTITIONING_TYPE,
             field=TIME_PARTITIONING_COLUMN,
         )
         # クラスタの設定
         if CLUSTER_FIELDS:
-            print(f'cluster_fields: {CLUSTER_FIELDS}')
+            print(f"cluster_fields: {CLUSTER_FIELDS}")
             job_config.clustering_fields = CLUSTER_FIELDS
 
     # クエリ発行

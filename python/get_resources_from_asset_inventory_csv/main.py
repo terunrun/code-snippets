@@ -6,7 +6,7 @@ import sys
 
 # 実行時引数としてAsset Inventoryの画面から取得した対象CSVを受け取る
 args = sys.argv
-file_name = args[1]
+FILE_NAME = args[1]
 
 output_csv_header = [
     "組織", "フォルダ", "プロジェクト ID", "リソースの種類", "名前",
@@ -41,9 +41,9 @@ def sort_output_rows(output_rows):
 def main():
     # 対象CSVをヘッダー抜きで読み込む
     os.makedirs('./output', exist_ok=True)
-    with open(f"./{file_name}.csv", 'rt') as input_csv:
+    with open(f"./{FILE_NAME}.csv", "rt", encoding="utf-8") as input_csv:
         dict_reader = csv.DictReader(input_csv)
-        input_csv_rows = [row for row in dict_reader]
+        input_csv_rows = list(dict_reader)
 
         organization_list_raw = []
         folder_list_raw = []
@@ -55,7 +55,7 @@ def main():
                 folder_list_raw.append(input_csv_row["フォルダ"])
             # 「sys-」始まりのプロジェクトは自動的に作成される（であろう）ため除外する
             if input_csv_row["プロジェクト ID"] and not input_csv_row["プロジェクト ID"].startswith("sys-"):
-               project_list_raw.append(input_csv_row["プロジェクト ID"])
+                project_list_raw.append(input_csv_row["プロジェクト ID"])
 
         organization_list = list(set(organization_list_raw))
         folder_list = list(set(folder_list_raw))
@@ -67,7 +67,7 @@ def main():
 
         # for organization in organization_list:
         #     # 結果出力CSVを作成
-        #     with open(f'./{file_name}_{organization.replace("/", "_")}.csv', 'w') as output_csv:
+        #     with open(f'./{FILE_NAME}_{organization.replace("/", "_")}.csv', 'w') as output_csv:
         #         writer = csv.writer(output_csv)
         #         writer.writerow(output_csv_header)
         #         for input_csv_row in input_csv_rows:
@@ -78,7 +78,10 @@ def main():
 
         for organization in organization_list:
             # 結果出力CSVを作成
-            with open(f'./output/{file_name}_{organization.replace("/", "_")}.csv', 'w') as output_csv:
+            with open(
+                f'./output/{FILE_NAME}_{organization.replace("/", "_")}.csv',
+                "w", encoding="utf-8"
+            ) as output_csv:
                 writer = csv.writer(output_csv)
                 output_rows = []
                 for input_csv_row in input_csv_rows:
@@ -90,7 +93,10 @@ def main():
 
         for folder in folder_list:
             # 結果出力CSVを作成
-            with open(f'./output/{file_name}_{folder.replace("/", "_").replace("[", "").replace("]", "")}.csv', 'w') as output_csv:
+            with open(
+                f'./output/{FILE_NAME}_{folder.replace("/", "_").replace("[", "").replace("]", "")}.csv',
+                "w", encoding="utf-8"
+            )as output_csv:
                 writer = csv.writer(output_csv)
                 output_rows = []
                 for input_csv_row in input_csv_rows:
@@ -101,7 +107,10 @@ def main():
 
         for project in project_list:
             # 結果出力CSVを作成
-            with open(f'./output/{file_name}_{project}.csv', 'w') as output_csv:
+            with open(
+                f'./output/{FILE_NAME}_{project}.csv',
+                "w", encoding="utf-8"
+            ) as output_csv:
                 writer = csv.writer(output_csv)
                 output_rows = []
                 for input_csv_row in input_csv_rows:

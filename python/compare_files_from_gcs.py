@@ -19,31 +19,31 @@ def compare_files_from_gcs():
     for file in files:
         # ファイルをローカルにコピーする
         # TODO: クライアントライブラリを使うようにする
-        command = 'gsutil cp gs://{0}/{1} /tmp/diff/{1}'.format(DESTINATION_BUCKET_1, file)
-        ret = subprocess.run(command.split())
+        command = f'gsutil cp gs://{DESTINATION_BUCKET_1}/{file} /tmp/diff/{file}'
+        ret = subprocess.run(command.split(), check=False)
 
         # 比較対象ファイルをローカルにコピーする
         # TODO: クライアントライブラリを使うようにする
-        command = 'gsutil cp gs://{0}/{1} /tmp/diff/backup_{1}'.format(DESTINATION_BUCKET_2, file)
-        ret = subprocess.run(command.split())
+        command = f'gsutil cp gs://{DESTINATION_BUCKET_2}/{file} /tmp/diff/backup_{file}'
+        ret = subprocess.run(command.split(), check=False)
 
         # 比較対象ファイルを取得できたかどうかチェックする
         if not os.path.isfile(f'/tmp/diff/backup_{file}'):
             logging.info('比較対象ファイルを取得できない')
 
         # ファイルを比較する
-        command = 'diff /tmp/diff/{0} /tmp/diff/backup_{0}'.format(file)
-        ret = subprocess.run(command.split(), stdout=subprocess.PIPE)
+        command = f'diff /tmp/diff/{file} /tmp/diff/backup_{file}'
+        ret = subprocess.run(command.split(), stdout=subprocess.PIPE, check=False)
         output = ret.stdout
         # 結果を行ごとにリストにする。
         lines = output.splitlines()
 
         # TODO:ここまでの処理でエラーが起きたら場合でも削除できるようにする
         # ローカルファイルを削除する。
-        command = 'rm -f /tmp/diff/{0}'.format(file)
-        ret = subprocess.run(command.split())
-        command = 'rm -f /tmp/diff/backup_{0}'.format(file)
-        ret = subprocess.run(command.split())
+        command = f'rm -f /tmp/diff/{file}'
+        ret = subprocess.run(command.split(), check=False)
+        command = f'rm -f /tmp/diff/backup_{file}'
+        ret = subprocess.run(command.split(), check=False)
 
         if lines:
             logging.info('diff length: %s', len(lines))

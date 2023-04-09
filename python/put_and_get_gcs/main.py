@@ -12,8 +12,14 @@ PROJECT = args[1]
 BUCKET_ID = args[2]
 
 output_contents = [
-    {"key": "value1", "nest_key": [{"in_nest_key1": "in_nest_value1", "in_nest_key2": "in_nest_value2",}]},
-    {"key": "value2", "nest_key": [{"in_nest_key1": "in_nest_value3", "in_nest_key4": "in_nest_value4",}]},
+    {
+        "key": "value1",
+        "nest_key": [{"in_nest_key1": "in_nest_value1", "in_nest_key2": "in_nest_value2",}]
+    },
+    {
+        "key": "value2",
+        "nest_key": [{"in_nest_key1": "in_nest_value3", "in_nest_key4": "in_nest_value4",}]
+    },
 ]
 
 
@@ -27,7 +33,7 @@ def main():
     bucket = storage_client.get_bucket(BUCKET_ID)
     filename = f"sample_{date}.json"
 
-    with open(f"./{filename}", "w") as out:
+    with open(f"./{filename}", "w", encoding="utf-8") as out:
         for target in output_contents:
             json.dump(target, out)
             out.write("\n")

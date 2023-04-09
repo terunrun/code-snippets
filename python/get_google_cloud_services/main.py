@@ -1,12 +1,12 @@
 """指定したGoogle Cloud組織配下のプロジェクトで有効になっているサービスを出力する"""
-"""https://cloud.google.com/python/docs/reference/serviceusage/latest/google.cloud.service_usage_v1.services.service_usage.ServiceUsageClient"""
+# https://cloud.google.com/python/docs/reference/serviceusage/latest/
 
 import sys
 from google.cloud import resourcemanager_v3
 from google.cloud import service_usage_v1
 
 args = sys.argv
-target_organization = args[1]
+TARGET_ORGANIZATION = args[1]
 
 
 def main():
@@ -16,7 +16,7 @@ def main():
     service_usage_client = service_usage_v1.ServiceUsageClient()
 
     # 指定した組織配下のフォルダを取得する
-    request = resourcemanager_v3.ListFoldersRequest(parent=f"organizations/{target_organization}",)
+    request = resourcemanager_v3.ListFoldersRequest(parent=f"organizations/{TARGET_ORGANIZATION}",)
     folders = folder_client.list_folders(request=request)
 
     # TODO: フォルダのネストに対応する

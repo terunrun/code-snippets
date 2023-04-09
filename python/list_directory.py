@@ -4,10 +4,10 @@ import os
 import sys
 
 args = sys.argv
-target_full_path = args[1]
+TARGET_FULL_PATH = args[1]
 
 def list_directory():
-    files = os.listdir(target_full_path)
+    files = os.listdir(TARGET_FULL_PATH)
     for file in files:
         print(f"{file}")
 

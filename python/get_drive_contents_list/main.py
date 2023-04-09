@@ -17,11 +17,14 @@ from googleapiclient.errors import HttpError
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly']
 
-file_fields = ['parents', 'name', 'id', 'trashed', 'createdTime', 'modifiedTime', 'webContentLink', 'webViewLink']
+file_fields = [
+    'parents', 'name', 'id', 'trashed', 'createdTime',
+    'modifiedTime', 'webContentLink', 'webViewLink'
+]
 
 # 実行時引数として対象のドライブID受け取る
 args = sys.argv
-drive_id = args[1]
+DRIVE_ID = args[1]
 
 # idからリソース名を取得し、親リソースがある場合はそのidに対して再帰呼び出し
 def get_full_parent(full_parent, item_parent, id_list, item_list):
@@ -50,15 +53,15 @@ def main():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                "credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open('token.json', 'w') as token:
+        with open("token.json", "w", encoding="utf-8") as token:
             token.write(creds.to_json())
 
     try:
-        service = build('drive', 'v3', credentials=creds)
-        with open(f'file_list_{drive_id}.csv', 'w') as result_file:
+        service = build("drive", "v3", credentials=creds)
+        with open(f"file_list_{DRIVE_ID}.csv", "w", encoding="utf-8") as result_file:
             writer = csv.writer(result_file)
             page_token = None
             item_list = []
@@ -67,25 +70,28 @@ def main():
                 results = service.files().list(
                     # https://developers.google.com/drive/api/v3/reference/files?hl=ja
                     # spaces='drive',
-                    corpora='drive',
-                    driveId=drive_id,
+                    corpora="drive",
+                    driveId=DRIVE_ID,
                     includeItemsFromAllDrives=True,
                     supportsAllDrives=True,
                     # pageSize=10,
                     fields=f'nextPageToken, files({", ".join(file_fields)})',
                     pageToken=page_token
                 ).execute()
-                items = results.get('files', [])
+                items = results.get("files", [])
                 if not items:
-                    print('No files found.')
+                    print("No files found.")
                     return
                 for item in items:
-                    if not item['trashed']:
-                        id_list.append(item['id'])
+                    if not item["trashed"]:
+                        id_list.append(item["id"])
                         item_list.append([
-                            item['name'], item['id'], item['createdTime'], item['modifiedTime'], item['parents'], item['webContentLink'] if 'webContentLink' in item else "", item['webViewLink'] if 'webViewLink' in item else "",
+                            item["name"], item["id"], item["createdTime"],
+                            item["modifiedTime"], item["parents"],
+                            item["webContentLink"] if "webContentLink" in item else "",
+                            item["webViewLink"] if 'webViewLink' in item else "",
                         ])
-                page_token = results.get('nextPageToken', None)
+                page_token = results.get("nextPageToken", None)
                 if page_token is None:
                     break
 
@@ -95,13 +101,15 @@ def main():
                 full_parent = ''
                 item_list_with_full_parent.append([
                     # APIでの取得結果をすべてリストに格納したあとなので要素名で指定できない
-                    # item['name'], item['id'], item['createdTime'], item['modifiedTime'], get_full_parent(full_parent, item['parents'][0], id_list, item_list)
-                    get_full_parent(full_parent, item[4][0], id_list, item_list), item[0], item[1], item[2], item[3], item[5], item[6]
+                    # item['name'], item['id'], item['createdTime'], item['modifiedTime'],
+                    # get_full_parent(full_parent, item['parents'][0], id_list, item_list)
+                    get_full_parent(full_parent, item[4][0], id_list, item_list),
+                    item[0], item[1], item[2], item[3], item[5], item[6]
                 ])
 
             # 並べ替えてヘッダーをつける
             item_list_with_full_parent_sorted = sorted(item_list_with_full_parent, key=lambda x: (x[0], x[1]))
-            file_fields.remove('trashed')
+            file_fields.remove("trashed")
             item_list_with_full_parent_sorted.insert(0, file_fields)
             writer.writerows(item_list_with_full_parent_sorted)
 

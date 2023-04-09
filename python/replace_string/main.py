@@ -2,16 +2,15 @@
 
 import re
 import sys
-import google.auth
 
 # 実行時引数として置換対象文字列を記載したファイル名を受け取る
 args = sys.argv
-source_object = args[1]
-target_file = source_object + "_replaced"
+SOURCE_OBJECT = args[1]
+TARGET_FILE = SOURCE_OBJECT + "_replaced"
 
 
 def replace_string():
-    with open(f"./{source_object}", mode="r", encoding="utf-8") as source_file:
+    with open(f"./{SOURCE_OBJECT}", mode="r", encoding="utf-8") as source_file:
         strings_from_file = source_file.read()
         # print(f"in: {strings_from_file}")
 
@@ -35,13 +34,13 @@ def replace_string():
         # https://note.nkmk.me/python-dict-keys-values-items/
         # ファイル内の規定文字列を置換する
         # https://note.nkmk.me/python-str-replace-translate-re-sub/
-        for k, v in replacers.items():
-            strings_from_file = strings_from_file.replace(k, v)
+        for key, value in replacers.items():
+            strings_from_file = strings_from_file.replace(key, value)
             # print(f"work: {string_from_file}")
 
         # # 置換後のファイルを保存する
         # # https://note.nkmk.me/python-file-io-open-with/
-        with open(target_file, mode="w", encoding="utf-8") as output_file:
+        with open(TARGET_FILE, mode="w", encoding="utf-8") as output_file:
             output_file.write(strings_from_file)
 
 

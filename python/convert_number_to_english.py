@@ -50,6 +50,7 @@ args = sys.argv
 target_number = args[1]
 target_number_string = str(target_number)
 
+
 def get_one(target_number_string):
     if target_number_string == "0":
         return ""
@@ -60,27 +61,25 @@ def get_ten(target_number_string):
         return get_one(target_number_string[1])
     if int(target_number_string) < 20:
         return NUMBER_ENGILISH[target_number_string]
-    elif int(target_number_string) % 10 == 0:
+    if int(target_number_string) % 10 == 0:
         return NUMBER_ENGILISH[target_number_string]
-    else:
-        return NUMBER_ENGILISH[target_number_string[0] + "0"] + " " + NUMBER_ENGILISH[target_number_string[1]]
+    return NUMBER_ENGILISH[target_number_string[0] + "0"] + " " + NUMBER_ENGILISH[target_number_string[1]]
 
 def get_hundred(target_number_string):
     if target_number_string[0] == "0":
         return get_ten(target_number_string[1:3])
     if int(target_number_string) % 100 == 0:
         return get_one(target_number_string[0]) + " hundred"
-    else:
-        return get_one(target_number_string[0]) + " hundred " + get_ten(target_number_string[1:3])
+    return get_one(target_number_string[0]) + " hundred " + get_ten(target_number_string[1:3])
 
 def get_thousand(target_number_string):
     first_three_digits = target_number_string[:-3]
     last_three_digits = target_number_string[-3:]
     if len(first_three_digits) == 1:
         return get_one(first_three_digits) + " thousand " + get_hundred(last_three_digits)
-    elif len(first_three_digits) == 2:
+    if len(first_three_digits) == 2:
         return get_ten(first_three_digits) + " thousand " + get_hundred(last_three_digits)
-    elif len(first_three_digits) == 3:
+    if len(first_three_digits) == 3:
         return get_hundred(first_three_digits) + " thousand " + get_hundred(last_three_digits)
 
 def get_million(target_number_string):
@@ -88,9 +87,9 @@ def get_million(target_number_string):
     last_six_digits = target_number_string[-6:]
     if len(first_three_digits) == 1:
         return get_one(first_three_digits) + " million " + get_thousand(last_six_digits)
-    elif len(first_three_digits) == 2:
+    if len(first_three_digits) == 2:
         return get_ten(first_three_digits) + " million "  + get_thousand(last_six_digits)
-    elif len(first_three_digits) == 3:
+    if len(first_three_digits) == 3:
         return get_hundred(first_three_digits) + " million " + get_thousand(last_six_digits)
 
 def get_billion(target_number_string):
@@ -98,14 +97,14 @@ def get_billion(target_number_string):
     last_nine_digits = target_number_string[-9:]
     if len(first_three_digits) == 1:
         return get_one(first_three_digits) + " billion " + get_million(last_nine_digits)
-    elif len(first_three_digits) == 2:
+    if len(first_three_digits) == 2:
         return get_ten(first_three_digits) + " billion "  + get_million(last_nine_digits)
-    elif len(first_three_digits) == 3:
+    if len(first_three_digits) == 3:
         return get_hundred(first_three_digits) + " billion " + get_million(last_nine_digits)
 
 def convert_number_to_english():
     if not str.isdigit(target_number_string):
-        print(f"Please input number")
+        print("Please input number")
         sys.exit()
 
     print(f"input number is {target_number_string}")
@@ -122,6 +121,7 @@ def convert_number_to_english():
         print((get_million(target_number_string)).rstrip())
     elif len(target_number_string) == 10 or (len(target_number_string) == 11) or (len(target_number_string) == 12):
         print((get_billion(target_number_string)).rstrip())
+
 
 if __name__ == "__main__":
     convert_number_to_english()

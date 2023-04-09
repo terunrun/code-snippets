@@ -1,14 +1,12 @@
 """Google CloudのIAMポリシーを出力する"""
-"""https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest/google.cloud.resourcemanager_v3.services.organizations.OrganizationsClient"""
-"""https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest/google.cloud.resourcemanager_v3.services.folders.FoldersClient"""
-"""https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest/google.cloud.resourcemanager_v3.services.projects.ProjectsClient"""
+# https://cloud.google.com/python/docs/reference/cloudresourcemanager/latest/
 
 import sys
 from google.cloud import resourcemanager_v3
 from google.iam.v1 import iam_policy_pb2  # type: ignore
 
 args = sys.argv
-target_organization = args[1]
+TARGET_ORGANIZATION = args[1]
 
 
 def main():
@@ -17,14 +15,14 @@ def main():
     project_client = resourcemanager_v3.ProjectsClient()
 
     # 組織リソースのIAMポリシーを表示する
-    request = iam_policy_pb2.GetIamPolicyRequest(resource=f"organizations/{target_organization}")
+    request = iam_policy_pb2.GetIamPolicyRequest(resource=f"organizations/{TARGET_ORGANIZATION}")
     organization_iam_policy = organization_client.get_iam_policy(request=request)
     print(organization_iam_policy)
 
     #TODO: 組織直下のプロジェクトに対応する
 
     # フォルダリソースのIAMポリシーを表示する
-    request = resourcemanager_v3.ListFoldersRequest(parent=f"organizations/{target_organization}")
+    request = resourcemanager_v3.ListFoldersRequest(parent=f"organizations/{TARGET_ORGANIZATION}")
     folders = folder_client.list_folders(request=request)
     # TODO: フォルダのネストに対応する
     for folder in folders:

@@ -27,7 +27,7 @@ def main():
     with open(f"{KEY_NAME}.json", mode='w', encoding="UTF-8") as key_file:
         key_file.write(secret_payload)
 
-    print(f"Finish.")
+    print("Finish.")
 
 
 if __name__ == "__main__":
