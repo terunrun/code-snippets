@@ -1,4 +1,0 @@
-プロジェクト,スケジュールクエリ名,ロケーション,有効/無効,ステータス,ユーザー
-ccoe-project-dev,なし,なし,なし,なし,なし
-ccoe-project-prd,sample-schedule-query,asia-northeast1,False,TransferState.TRANSFER_STATE_UNSPECIFIED,otani-y@gicloud.co.jp
-ccoe-project-prd,sample_schedule_query_multi,US,True,TransferState.TRANSFER_STATE_UNSPECIFIED,otani-y@cip.gws-gic.net
