@@ -48,6 +48,12 @@ find . -name "*.py" | xargs pylint
 [（参考）PythonのLintとFormatter](https://www.sambaiz.net/article/125/)
 
 ## 単体テスト
+* ### 準備
+```sh
+pip3 install pytest
+pip3 install pytest-cov
+```
+
 * ### コマンドラインでカバレッジ確認
 ```sh
 pytest -v --cov=src tests
