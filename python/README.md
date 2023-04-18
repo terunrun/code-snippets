@@ -45,7 +45,10 @@ find . -name "*.py" | xargs yapf --i --recursive .
 ```sh
 find . -name "*.py" | xargs pylint
 ```
-[（参考）PythonのLintとFormatter](https://www.sambaiz.net/article/125/)
+
+* ### 参考
+[PythonのLintとFormatter](https://www.sambaiz.net/article/125/)
+
 
 ## 単体テスト
 * ### 準備
@@ -70,6 +73,9 @@ pytest -v --cov=src --cov-report=term-missing
 pytest -v --cov=src --cov-report=html
 * 実行パス直下にhtmlcovが作成され、その配下に出力される。
 ```
+* ### 参考
+[pythonのカバレッジをpytest-covで調べる](https://qiita.com/mink0212/items/34b9def61d58ab781714)
+
 
 ## 仮想環境作成
 * ### 環境作成/パッケージインストール
