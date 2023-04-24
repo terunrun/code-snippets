@@ -106,7 +106,7 @@ def main():
                         else:
                             for member in members:
                                 user = service.users().get(userKey=member["id"],).execute()
-                                print(user)
+                                # print(user)
                                 if not user:
                                     print(f'\nNo user id: {member["id"]}.')
                                 else:
