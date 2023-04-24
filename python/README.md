@@ -74,8 +74,9 @@ pytest -v --cov=src --cov-report=html
 * 実行パス直下にhtmlcovが作成され、その配下に出力される。
 ```
 * ### 参考
-[pythonのカバレッジをpytest-covで調べる](https://qiita.com/mink0212/items/34b9def61d58ab781714)
-
+[pythonのカバレッジをpytest-covで調べる](https://qiita.com/mink0212/items/34b9def61d58ab781714)  
+[【pytest】モックの使い方まとめ](https://zenn.dev/re24_1986/articles/0a7895b1429bfa)  
+[【Python】GoogleAPIを利用したメソッドのテストでモックを使う](https://mizzsugar.hatenablog.com/entry/2019/06/05/205612)  
 
 ## 仮想環境作成
 * ### 環境作成/パッケージインストール
