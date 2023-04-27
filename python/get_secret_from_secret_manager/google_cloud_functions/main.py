@@ -48,7 +48,7 @@ def main(request):
     secret_payload = access_secret_response.payload.data.decode("UTF-8")
     # logging("INFO", "Plaintext: {}".format(payload))
     key_file_name = f"/tmp/{KEY_NAME}.json"
-    with open(key_file_name, mode='w', encoding="UTF-8") as key_file:
+    with open(key_file_name, mode='w', encoding='utf-8', newline='\n') as key_file:
         key_file.write(secret_payload)
 
     logging("INFO", f"Finish accessing secret. {key_file_name} is successfully created.")

@@ -33,7 +33,7 @@ def main():
     service_usage_client = service_usage_v1.ServiceUsageClient()
     transfer_client = bigquery_datatransfer.DataTransferServiceClient()
 
-    with open(f"./output_bq_scheduled_query_{TARGET_ORGANIZATION}.csv", "w", encoding="utf-8") as csvfile:
+    with open(f"./output_bq_scheduled_query_{TARGET_ORGANIZATION}.csv", 'w', encoding='utf-8', newline='\n') as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow([
             "プロジェクト", "スケジュールクエリ名", "ロケーション", "有効/無効", "ステータス", "ユーザー"

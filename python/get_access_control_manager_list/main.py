@@ -22,7 +22,7 @@ def main():
         acm_list = json.load(input_json)
 
         # 結果出力CSVを作成
-        with open(f"./output_{FILE_NAME}.csv", "w", encoding="utf-8") as output_csv:
+        with open(f"./output_{FILE_NAME}.csv", 'w', encoding='utf-8', newline='\n') as output_csv:
             writer = csv.writer(output_csv)
             writer.writerow([ "タイプ", "プリンシパル", "アドレス", "ドメイン", "名前", "タイトル",])
 

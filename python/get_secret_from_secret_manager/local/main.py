@@ -24,7 +24,7 @@ def main():
     # write secret payload to local file.
     secret_payload = access_secret_response.payload.data.decode("UTF-8")
     # print("Plaintext: {}".format(payload))
-    with open(f"{KEY_NAME}.json", mode='w', encoding="UTF-8") as key_file:
+    with open(f"{KEY_NAME}.json", mode='w', encoding='utf-8', newline='\n') as key_file:
         key_file.write(secret_payload)
 
     print("Finish.")

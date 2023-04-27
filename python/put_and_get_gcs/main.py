@@ -33,7 +33,7 @@ def main():
     bucket = storage_client.get_bucket(BUCKET_ID)
     filename = f"sample_{date}.json"
 
-    with open(f"./{filename}", "w", encoding="utf-8") as out:
+    with open(f"./{filename}", 'w', encoding='utf-8', newline='\n') as out:
         for target in output_contents:
             json.dump(target, out)
             out.write("\n")

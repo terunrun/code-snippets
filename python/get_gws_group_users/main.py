@@ -44,7 +44,7 @@ def main():
                 "credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open("token.json", "w", encoding="utf-8") as token:
+        with open("token.json", 'w', encoding='utf-8', newline='\n') as token:
             token.write(creds.to_json())
     service = build("admin", "directory_v1", credentials=creds)
 
@@ -76,7 +76,7 @@ def main():
     #     writer.writerows(users_list_sorted)
 
     groups_list = []
-    with open(f"groups_list_{CUSTOMER_ID}.csv", "w", encoding="utf-8") as groups_file:
+    with open(f"groups_list_{CUSTOMER_ID}.csv", 'w', encoding='utf-8', newline='\n') as groups_file:
         writer = csv.writer(groups_file)
         page_token = None
         while True:

@@ -40,7 +40,7 @@ def replace_string():
 
         # # 置換後のファイルを保存する
         # # https://note.nkmk.me/python-file-io-open-with/
-        with open(TARGET_FILE, mode="w", encoding="utf-8") as output_file:
+        with open(TARGET_FILE, mode='w', encoding='utf-8', newline='\n') as output_file:
             output_file.write(strings_from_file)
 
 

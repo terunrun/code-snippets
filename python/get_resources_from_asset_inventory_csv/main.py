@@ -80,7 +80,7 @@ def main():
             # 結果出力CSVを作成
             with open(
                 f'./output/{FILE_NAME}_{organization.replace("/", "_")}.csv',
-                "w", encoding="utf-8"
+                'w', encoding='utf-8', newline='\n'
             ) as output_csv:
                 writer = csv.writer(output_csv)
                 output_rows = []
@@ -95,7 +95,7 @@ def main():
             # 結果出力CSVを作成
             with open(
                 f'./output/{FILE_NAME}_{folder.replace("/", "_").replace("[", "").replace("]", "")}.csv',
-                "w", encoding="utf-8"
+                'w', encoding='utf-8', newline='\n'
             )as output_csv:
                 writer = csv.writer(output_csv)
                 output_rows = []
@@ -109,7 +109,7 @@ def main():
             # 結果出力CSVを作成
             with open(
                 f'./output/{FILE_NAME}_{project}.csv',
-                "w", encoding="utf-8"
+                'w', encoding='utf-8', newline='\n'
             ) as output_csv:
                 writer = csv.writer(output_csv)
                 output_rows = []

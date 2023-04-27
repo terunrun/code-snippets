@@ -16,7 +16,7 @@ def main():
     if not datasets:
         print(f"project:{PROJECT} does not contain any datasets.")
 
-    with open(f"bq_tables_{PROJECT}.csv", "w", encoding="utf-8") as output_file:
+    with open(f"bq_tables_{PROJECT}.csv", 'w', encoding='utf-8', newline='\n') as output_file:
         writer = csv.writer(output_file)
         result_array = []
         for dataset in datasets:

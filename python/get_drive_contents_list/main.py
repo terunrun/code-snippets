@@ -56,12 +56,12 @@ def main():
                 "credentials.json", SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
-        with open("token.json", "w", encoding="utf-8") as token:
+        with open("token.json", 'w', encoding='utf-8', newline='\n') as token:
             token.write(creds.to_json())
 
     try:
         service = build("drive", "v3", credentials=creds)
-        with open(f"file_list_{DRIVE_ID}.csv", "w", encoding="utf-8") as result_file:
+        with open(f"file_list_{DRIVE_ID}.csv", 'w', encoding='utf-8', newline='\n') as result_file:
             writer = csv.writer(result_file)
             page_token = None
             item_list = []
